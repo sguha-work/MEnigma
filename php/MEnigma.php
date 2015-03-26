@@ -15,9 +15,9 @@ class MEnigma {
 			$this->plugboard = array('ab', 'cd', 'ef', 'gh', 'ij', 'kl', 'mn', 'op', 'qr', 'st', 'uv', 'wx', 'yz', 'AB', 'CD', 'EF', 'GH', 'IJ', 'KL', 'MN', 'OP', 'QR', 'ST', 'UV', 'WX', 'YZ');
 			$this->initialKey = "";
 		}
-		public function encrypt($inputString="") {
+		public function encrypt($inputString="", $initialKey="a,a,a") {
 			if(trim($inputString) != "") {
-				$this->startEncryptionProcess($inputString);
+				return $this->startEncryptionProcess($inputString, $initialKey);
 			}
 		}
 		private function startEncryptionProcess($inputString, $initialKey) {
@@ -25,11 +25,15 @@ class MEnigma {
 				$this->setRotors($initialKey);		
 				$outputString = "";
 				for($index=0; $index<strlen($inputString); $index++) {
-					
+					$outputString .= $this->encryptCharecter($inputString[$index]);
 				}
+				return $outputString;
 			} else {
 				echo "Provided key is invalid key mast have 3 charecters between a-z and A-Z and they mast be comma separeted";die();
 			}
+		}
+		private function encryptCharecter($inputCharecter) {
+			
 		}
 		private function isValidKey($key) {
 			$keyArray = explode(",",$key);
