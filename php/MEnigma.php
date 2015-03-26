@@ -33,7 +33,17 @@ class MEnigma {
 			}
 		}
 		private function encryptCharecter($inputCharecter) {
-			
+			$outputCharecter = $this->transformOnPlugBoard($inputCharecter);
+		}
+		private function transformOnPlugBoard($inputCharecter) {
+			foreach($this->plugboard as $plugboardEntry) {
+				if($plugboardEntry[0]==$inputCharecter) {
+					return $plugboardEntry[1];
+				}
+				if($plugboardEntry[1]==$inputCharecter) {
+					return $plugboardEntry[0];	
+				}
+			}
 		}
 		private function isValidKey($key) {
 			$keyArray = explode(",",$key);
