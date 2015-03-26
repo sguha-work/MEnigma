@@ -1,4 +1,4 @@
-<?php
+<?php 
 class MEnigma {
 		private $rotor1, $rotor1Value;
 		private $rotor2, $rotor2Value;
@@ -6,24 +6,31 @@ class MEnigma {
 		private $reflector;
 		private $plugboard;
 		private $charecters;
+		private $initialKey;
 		public function __construct() {
 			$this->charecters = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 			$this->rotor1 = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 			$this->rotor2 = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 			$this->rotor3 = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 			$this->plugboard = array('ab', 'cd', 'ef', 'gh', 'ij', 'kl', 'mn', 'op', 'qr', 'st', 'uv', 'wx', 'yz', 'AB', 'CD', 'EF', 'GH', 'IJ', 'KL', 'MN', 'OP', 'QR', 'ST', 'UV', 'WX', 'YZ');
+			$this->initialKey = "";
 		}
 		public function encrypt($inputString="") {
 			if(trim($inputString) != "") {
 				$this->startEncryptionProcess($inputString);
 			}
 		}
-		private function startEncryptionProcess($inputString) {
-			setInitialKey();
-			$outputString = "";
-			for($index=0; $index<strlen($inputString); $index++) {
-				
+		private function startEncryptionProcess($inputString, $initialKey) {
+			if($this->isValidKey($initialKey)) {
+				setInitialKey();
+				$outputString = "";
+				for($index=0; $index<strlen($inputString); $index++) {
+					
+				}
 			}
+		}
+		private function isValidKey($key) {
+			$keyArray = explode(",",$key);
 		}
 		private function setInitialKey() {
 			$randomNumbers = $this->getRandomNumber();
