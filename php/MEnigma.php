@@ -1,4 +1,4 @@
-<?php
+<?php 
 class MEnigma {
 		private $rotor1, $rotor1Value;
 		private $rotor2, $rotor2Value;
