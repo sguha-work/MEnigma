@@ -22,32 +22,45 @@ class MEnigma {
 		}
 		private function startEncryptionProcess($inputString, $initialKey) {
 			if($this->isValidKey($initialKey)) {
-				setInitialKey();
+				$this->setRotors($initialKey);		
 				$outputString = "";
 				for($index=0; $index<strlen($inputString); $index++) {
 					
 				}
+			} else {
+				echo "Provided key is invalid key mast have 3 charecters between a-z and A-Z and they mast be comma separeted";die();
 			}
 		}
 		private function isValidKey($key) {
 			$keyArray = explode(",",$key);
+			if(count($keyArray) != 3) {
+				return false;
+			}
+			foreach($keyArray as $charecter) {
+				if(strlen($charecter) != 1) {
+					return false;
+				} else {
+					if(!array_search($charecter, $this->rotor1)) {
+						return false;
+					}
+				}
+			}
+			return true;
 		}
-		private function setInitialKey() {
-			$randomNumbers = $this->getRandomNumber();
-			$this->setRotors($randomNumbers);
-		}
-		private function setRotors($randomNumbers) {
+		
+		private function setRotors($initialKey) {
 			$index = 1;
-			foreach($randomNumbers as $randomNumber) {
+			$keyArray = explode(",", $initialKey);
+			foreach($keyArray as $charecter) {
 				switch($index) {
 					case 1:
-						$this->rotor1Value = $this->rotor1[$randomNumber];
+						$this->rotor1Value = $charecter;
 					break;
 					case 2:
-						$this->rotor1Value = $this->rotor1[$randomNumber];
+						$this->rotor2Value = $charecter;
 					break;
 					case 3
-						$this->rotor1Value = $this->rotor1[$randomNumber];
+						$this->rotor3Value = $charecter;
 					break;
 				}
 				$index += 1;
@@ -89,11 +102,6 @@ class MEnigma {
 			}
 			$this->rotor3Value = $this->rotor3[$indexOfRotor3Value];		
 		}
-		private function getRandomNumber() {
-			return array(5, 2, 3);
-		}
-
-
 
 	}
 ?>	
