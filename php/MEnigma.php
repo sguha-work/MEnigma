@@ -15,13 +15,16 @@ class MEnigma {
 			$this->plugboard = array('ab', 'cd', 'ef', 'gh', 'ij', 'kl', 'mn', 'op', 'qr', 'st', 'uv', 'wx', 'yz', 'AB', 'CD', 'EF', 'GH', 'IJ', 'KL', 'MN', 'OP', 'QR', 'ST', 'UV', 'WX', 'YZ');
 			$this->initialKey = "";
 		}
-		public function encrypt($inputString="", $initialKey="a,a,a") {
+		public function encrypt($inputString="", $initialKey="a,a,a", $plugboard="") {
 			if(trim($inputString) != "") {
-				return $this->startEncryptionProcess($inputString, $initialKey);
+				return $this->startEncryptionProcess($inputString, $initialKey, $plugboard);
 			}
 		}
 		private function startEncryptionProcess($inputString, $initialKey) {
 			if($this->isValidKey($initialKey)) {
+				if(strlen($plugboard)>0 && $this->isValidPlugboardEntry($plugboard)) {
+					$this->setPlugBoard($plugboard);
+				}
 				$this->setRotors($initialKey);		
 				$outputString = "";
 				for($index=0; $index<strlen($inputString); $index++) {
@@ -32,8 +35,12 @@ class MEnigma {
 				echo "Provided key is invalid key mast have 3 charecters between a-z and A-Z and they mast be comma separeted";die();
 			}
 		}
+		private function setPlugBoard($plugboard) {
+			$this->plugboard = $plugboard;
+		}
 		private function encryptCharecter($inputCharecter) {
 			$outputCharecter = $this->transformOnPlugBoard($inputCharecter);
+			echo $outputCharecter;
 		}
 		private function transformOnPlugBoard($inputCharecter) {
 			foreach($this->plugboard as $plugboardEntry) {
@@ -44,6 +51,7 @@ class MEnigma {
 					return $plugboardEntry[0];	
 				}
 			}
+			return $inputCharecter;
 		}
 		private function isValidKey($key) {
 			$keyArray = explode(",",$key);
@@ -54,7 +62,7 @@ class MEnigma {
 				if(strlen($charecter) != 1) {
 					return false;
 				} else {
-					if(!array_search($charecter, $this->rotor1)) {
+					if(!in_array($charecter, $this->rotor1, true)) {
 						return false;
 					}
 				}
@@ -73,7 +81,7 @@ class MEnigma {
 					case 2:
 						$this->rotor2Value = $charecter;
 					break;
-					case 3
+					case 3:
 						$this->rotor3Value = $charecter;
 					break;
 				}
@@ -90,7 +98,7 @@ class MEnigma {
 			}
 		}
 		private function rotateRotor1() {
-			$indexOfRotor1Value = array_search($this->rotor1Value, $this->rotor1, true);
+			$indexOfRotor1Value = in_array($this->rotor1Value, $this->rotor1, true);
 			if($indexOfRotor1Value == 51) {
 				$indexOfRotor1Value = 0;
 			} else {
@@ -99,7 +107,7 @@ class MEnigma {
 			$this->rotor1Value = $this->rotor1[$indexOfRotor1Value];
 		}
 		private function rotateRotor2() {
-			$indexOfRotor2Value = array_search($this->rotor2Value, $this->rotor2, true);
+			$indexOfRotor2Value = in_array($this->rotor2Value, $this->rotor2, true);
 			if($indexOfRotor2Value == 51) {
 				$indexOfRotor2Value = 0;
 			} else {
@@ -108,7 +116,7 @@ class MEnigma {
 			$this->rotor2Value = $this->rotor2[$indexOfRotor2Value];	
 		}
 		private function rotateRotor3() {
-			$indexOfRotor3Value = array_search($this->rotor3Value, $this->rotor3, true);
+			$indexOfRotor3Value = in_array($this->rotor3Value, $this->rotor3, true);
 			if($indexOfRotor3Value == 51) {
 				$indexOfRotor3Value = 0;
 			} else {
