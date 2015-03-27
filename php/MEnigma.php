@@ -78,15 +78,34 @@ class MEnigma {
 				return $this->getSingleDigitAfterSummation($outputNumber);
 			}
 		}
-		private function getCharecterAfterSubstitutionOfGivenPosition($position) {
-			return $this->rotor1[(count($this->rotor1)-1)-$position];
+		private function getCharecterAfterSubstitutionOfGivenPosition($position,$rotorNumber) {
+			$rotorArray = array();
+			switch($rotorNumber) {
+				case 1:
+					$rotorArray = $this->rotor1;
+				break;
+				case 2:
+					$rotorArray = $this->rotor2;
+				break;
+				case 3:
+					$rotorArray = $this->rotor3;
+				break;
+			}
+			for($index1=1; $index1<=$position; $index1++) {
+				$temp = $rotorArray[0];
+				for($index2=1; $index2<count($rotorArray); $index2++) {
+					$rotorArray[$index2-1] = $rotorArray[$index2];
+				}
+				$rotorArray[count($rotorArray)-1] = $temp;
+			}
+			return $rotorArray[$position];
 		}
 		private function passThroughRotor1($inputCharecter) {
-			$positionOfRotor1Value = array_search($this->rotor1Value, $this->rotor1, true);
-			$positionOfTheInputCharecterInRotor1 = array_search($inputCharecter, $this->rotor1);
+			$positionOfRotor1Value = array_search($this->rotor1Value, $this->rotor1, true)+1;
+			$positionOfTheInputCharecterInRotor1 = array_search($inputCharecter, $this->rotor1)+1;
 			$totalPosition = $positionOfRotor1Value + $positionOfTheInputCharecterInRotor1;
 			$singleDigitPosition = $this->getSingleDigitAfterSummation($totalPosition);
-			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition);
+			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition, 1);
 			return $charecter;
 		}
 		private function passThroughRotor2($inputCharecter) {
@@ -94,7 +113,7 @@ class MEnigma {
 			$positionOfTheInputCharecterInRotor2 = array_search($inputCharecter, $this->rotor1)+1;
 			$totalPosition = $positionOfRotor2Value + $positionOfTheInputCharecterInRotor2;
 			$singleDigitPosition = $this->getSingleDigitAfterSummation($totalPosition);
-			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition);
+			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition, 2);
 			return $charecter;
 		}
 		private function passThroughRotor3($inputCharecter) {
@@ -102,7 +121,7 @@ class MEnigma {
 			$positionOfTheInputCharecterInRotor3 = array_search($inputCharecter, $this->rotor1)+1;
 			$totalPosition = $positionOfRotor3Value + $positionOfTheInputCharecterInRotor3;
 			$singleDigitPosition = $this->getSingleDigitAfterSummation($totalPosition);
-			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition);
+			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition, 3);
 			return $charecter;
 		}
 		private function transformOnPlugBoard($inputCharecter) {
