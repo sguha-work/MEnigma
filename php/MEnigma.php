@@ -15,15 +15,15 @@ class MEnigma {
 			$this->plugboard = array('ab', 'cd', 'ef', 'gh', 'ij', 'kl', 'mn', 'op', 'qr', 'st', 'uv', 'wx', 'yz', 'AB', 'CD', 'EF', 'GH', 'IJ', 'KL', 'MN', 'OP', 'QR', 'ST', 'UV', 'WX', 'YZ');
 			$this->initialKey = "";
 		}
-		public function encrypt($inputString="", $initialKey="a,a,a", $plugboard="") {
+		public function encrypt($inputString="", $initialKey="a,a,a", $plugboardString="") {
 			if(trim($inputString) != "") {
-				return $this->startEncryptionProcess($inputString, $initialKey, $plugboard);
+				return $this->startEncryptionProcess($inputString, $initialKey, $plugboardString);
 			}
 		}
-		private function startEncryptionProcess($inputString, $initialKey, $plugboard) {
+		private function startEncryptionProcess($inputString, $initialKey, $plugboardString) {
 			if($this->isValidKey($initialKey)) {
-				if(strlen($plugboard)>=2 && $this->isValidPlugboardEntry($plugboard)) {
-					$this->setPlugBoard($plugboard);
+				if(strlen($plugboardString)>=2 && $this->isValidPlugboardEntry($plugboardString)) {
+					$this->setPlugBoard($plugboardString);
 				}
 				$this->setRotors($initialKey);		
 				$outputString = "";
@@ -35,7 +35,7 @@ class MEnigma {
 				echo "Provided key is invalid key mast have 3 charecters between a-z and A-Z and they mast be comma separeted";die();
 			}
 		}
-		private function isValidPlugboardEntry($plugboard) {
+		private function isValidPlugboardEntry($plugboardString) {
 			return true;
 		}
 		private function setPlugBoard($plugboard) {
