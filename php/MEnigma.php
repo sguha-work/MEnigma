@@ -44,19 +44,19 @@ class MEnigma {
 		private function encryptCharecter($inputCharecter) {
 			$outputCharecter = $inputCharecter;
 			if(in_array($inputCharecter, $this->rotor1, true)) {
-				$outputCharecter = $this->transformOnPlugBoard($inputCharecter);
+				$outputCharecter = $this->transformOnPlugBoard($inputCharecter);//echo $outputCharecter."</br>";
 				
-				$outputCharecter = $this->passThroughRotor1($outputCharecter);
-				$outputCharecter = $this->passThroughRotor2($outputCharecter);
-				$outputCharecter = $this->passThroughRotor3($outputCharecter);
+				$outputCharecter = $this->passThroughRotor1($outputCharecter);//echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughRotor2($outputCharecter);//echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughRotor3($outputCharecter);//echo $outputCharecter."</br>";
 				
-				$outputCharecter = $this->passThroughReflector($outputCharecter);
+				$outputCharecter = $this->passThroughReflector($outputCharecter);//echo $outputCharecter."</br>";
 				
-				$outputCharecter = $this->passThroughRotor3($outputCharecter);
-				$outputCharecter = $this->passThroughRotor2($outputCharecter);
-				$outputCharecter = $this->passThroughRotor1($outputCharecter);
+				$outputCharecter = $this->passThroughRotor3($outputCharecter);//echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughRotor2($outputCharecter);//echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughRotor1($outputCharecter);//echo $outputCharecter."</br>";
 
-				$outputCharecter = $this->transformOnPlugBoard($inputCharecter);
+				$outputCharecter = $this->transformOnPlugBoard($inputCharecter);//echo $outputCharecter."</br>";
 				
 			}
 			$this->rotateRotors();
@@ -79,12 +79,11 @@ class MEnigma {
 			}
 		}
 		private function getCharecterAfterSubstitutionOfGivenPosition($position) {
-			$roundOfNumber = round((count($this->rotor1)-1)/($position));
-			return $this->rotor1[$roundOfNumber];
+			return $this->rotor1[(count($this->rotor1)-1)-$position];
 		}
 		private function passThroughRotor1($inputCharecter) {
-			$positionOfRotor1Value = array_search($this->rotor1Value, $this->rotor1, true)+1;
-			$positionOfTheInputCharecterInRotor1 = array_search($inputCharecter, $this->rotor1)+1;
+			$positionOfRotor1Value = array_search($this->rotor1Value, $this->rotor1, true);
+			$positionOfTheInputCharecterInRotor1 = array_search($inputCharecter, $this->rotor1);
 			$totalPosition = $positionOfRotor1Value + $positionOfTheInputCharecterInRotor1;
 			$singleDigitPosition = $this->getSingleDigitAfterSummation($totalPosition);
 			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition);
