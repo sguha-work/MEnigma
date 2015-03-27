@@ -42,8 +42,69 @@ class MEnigma {
 			$this->plugboard = explode(",",$plugboard);
 		}
 		private function encryptCharecter($inputCharecter) {
-			$outputCharecter = $this->transformOnPlugBoard($inputCharecter);
-			echo $outputCharecter;
+			$outputCharecter = $inputCharecter;
+			if(in_array($inputCharecter, $this->rotor1, true)) {
+				$outputCharecter = $this->transformOnPlugBoard($inputCharecter);
+				
+				$outputCharecter = $this->passThroughRotor1($outputCharecter);
+				$outputCharecter = $this->passThroughRotor2($outputCharecter);
+				$outputCharecter = $this->passThroughRotor3($outputCharecter);
+				
+				$outputCharecter = $this->passThroughReflector($outputCharecter);
+				
+				$outputCharecter = $this->passThroughRotor3($outputCharecter);
+				$outputCharecter = $this->passThroughRotor2($outputCharecter);
+				$outputCharecter = $this->passThroughRotor1($outputCharecter);
+
+				$outputCharecter = $this->transformOnPlugBoard($inputCharecter);
+				
+			}
+			$this->rotateRotors();
+			return $outputCharecter;
+		}
+		private function passThroughReflector($inputcharecter) {
+			$posionOfInputCharecter = array_search($inputcharecter, $this->rotor1);
+			return $this->rotor1[51-$posionOfInputCharecter];
+		}
+		private function getSingleDigitAfterSummation($number) {
+			$numberString = (string)$number;
+			if(strlen($numberString) == 1) {
+				return $number;
+			} else {
+				$outputNumber = 1;
+				for($index=0; $index<strlen($numberString); $index++) {
+					$outputNumber *= intval($numberString[$index]);
+				}
+				return $this->getSingleDigitAfterSummation($outputNumber);
+			}
+		}
+		private function getCharecterAfterSubstitutionOfGivenPosition($position) {
+			$roundOfNumber = round((count($this->rotor1)-1)/($position));
+			return $this->rotor1[$roundOfNumber];
+		}
+		private function passThroughRotor1($inputCharecter) {
+			$positionOfRotor1Value = array_search($this->rotor1Value, $this->rotor1, true)+1;
+			$positionOfTheInputCharecterInRotor1 = array_search($inputCharecter, $this->rotor1)+1;
+			$totalPosition = $positionOfRotor1Value + $positionOfTheInputCharecterInRotor1;
+			$singleDigitPosition = $this->getSingleDigitAfterSummation($totalPosition);
+			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition);
+			return $charecter;
+		}
+		private function passThroughRotor2($inputCharecter) {
+			$positionOfRotor2Value = array_search($this->rotor2Value, $this->rotor2, true)+1;
+			$positionOfTheInputCharecterInRotor2 = array_search($inputCharecter, $this->rotor1)+1;
+			$totalPosition = $positionOfRotor2Value + $positionOfTheInputCharecterInRotor2;
+			$singleDigitPosition = $this->getSingleDigitAfterSummation($totalPosition);
+			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition);
+			return $charecter;
+		}
+		private function passThroughRotor3($inputCharecter) {
+			$positionOfRotor3Value = array_search($this->rotor3Value, $this->rotor3, true)+1;
+			$positionOfTheInputCharecterInRotor3 = array_search($inputCharecter, $this->rotor1)+1;
+			$totalPosition = $positionOfRotor3Value + $positionOfTheInputCharecterInRotor3;
+			$singleDigitPosition = $this->getSingleDigitAfterSummation($totalPosition);
+			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition);
+			return $charecter;
 		}
 		private function transformOnPlugBoard($inputCharecter) {
 			foreach($this->plugboard as $plugboardEntry) {
@@ -101,7 +162,7 @@ class MEnigma {
 			}
 		}
 		private function rotateRotor1() {
-			$indexOfRotor1Value = in_array($this->rotor1Value, $this->rotor1, true);
+			$indexOfRotor1Value = array_search($this->rotor1Value, $this->rotor1, true);
 			if($indexOfRotor1Value == 51) {
 				$indexOfRotor1Value = 0;
 			} else {
@@ -110,7 +171,7 @@ class MEnigma {
 			$this->rotor1Value = $this->rotor1[$indexOfRotor1Value];
 		}
 		private function rotateRotor2() {
-			$indexOfRotor2Value = in_array($this->rotor2Value, $this->rotor2, true);
+			$indexOfRotor2Value = array_search($this->rotor2Value, $this->rotor2, true);
 			if($indexOfRotor2Value == 51) {
 				$indexOfRotor2Value = 0;
 			} else {
@@ -119,7 +180,7 @@ class MEnigma {
 			$this->rotor2Value = $this->rotor2[$indexOfRotor2Value];	
 		}
 		private function rotateRotor3() {
-			$indexOfRotor3Value = in_array($this->rotor3Value, $this->rotor3, true);
+			$indexOfRotor3Value = array_search($this->rotor3Value, $this->rotor3, true);
 			if($indexOfRotor3Value == 51) {
 				$indexOfRotor3Value = 0;
 			} else {
