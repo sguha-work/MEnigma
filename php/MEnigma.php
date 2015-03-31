@@ -41,23 +41,26 @@ class MEnigma {
 		}
 		private function setPlugBoard($plugboard) {
 			$this->plugboard = explode(",",$plugboard);
+			for($index=0; $index<count($this->plugboard); $index++) {
+				$this->plugboard[$index] = trim($this->plugboard[$index]);
+			}
 		}
 		private function encryptCharecter($inputCharecter) {
 			$outputCharecter = $inputCharecter;
 			if(in_array($inputCharecter, $this->rotor1, true)) {
-				$outputCharecter = $this->transformOnPlugBoard($inputCharecter);echo $outputCharecter."</br>";
+				$outputCharecter = $this->transformOnPlugBoard($inputCharecter);//echo $outputCharecter."</br>";
 				
-				$outputCharecter = $this->passThroughRotor1($outputCharecter);echo $outputCharecter."</br>";
-				$outputCharecter = $this->passThroughRotor2($outputCharecter);echo $outputCharecter."</br>";
-				$outputCharecter = $this->passThroughRotor3($outputCharecter);echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughRotor1($outputCharecter);//echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughRotor2($outputCharecter);//echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughRotor3($outputCharecter);//echo $outputCharecter."</br>";
 				
-				$outputCharecter = $this->passThroughReflector($outputCharecter);echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughReflector($outputCharecter);//echo $outputCharecter."</br>";
 				
-				$outputCharecter = $this->passThroughRotor3($outputCharecter);echo $outputCharecter."</br>";
-				$outputCharecter = $this->passThroughRotor2($outputCharecter);echo $outputCharecter."</br>";
-				$outputCharecter = $this->passThroughRotor1($outputCharecter);echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughRotor3($outputCharecter);//echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughRotor2($outputCharecter);//echo $outputCharecter."</br>";
+				$outputCharecter = $this->passThroughRotor1($outputCharecter);//echo $outputCharecter."</br>";
 
-				$outputCharecter = $this->transformOnPlugBoard($inputCharecter);echo $outputCharecter."</br>";
+				$outputCharecter = $this->transformOnPlugBoard($inputCharecter);//echo $outputCharecter."</br>";
 				
 			}
 			$this->rotateRotors();
@@ -107,7 +110,6 @@ class MEnigma {
 			$totalPosition = $positionOfRotor1Value + $positionOfTheInputCharecterInRotor1;
 			$singleDigitPosition = $this->getSingleDigitAfterSummation($totalPosition);
 			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition, 1);
-			$this->reverseRotor(1);
 			return $charecter;
 		}
 		private function passThroughRotor2($inputCharecter) {
@@ -116,7 +118,6 @@ class MEnigma {
 			$totalPosition = $positionOfRotor2Value + $positionOfTheInputCharecterInRotor2;
 			$singleDigitPosition = $this->getSingleDigitAfterSummation($totalPosition);
 			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition, 2);
-			$this->reverseRotor(2);
 			return $charecter;
 		}
 		private function passThroughRotor3($inputCharecter) {
@@ -125,21 +126,7 @@ class MEnigma {
 			$totalPosition = $positionOfRotor3Value + $positionOfTheInputCharecterInRotor3;
 			$singleDigitPosition = $this->getSingleDigitAfterSummation($totalPosition);
 			$charecter = $this->getCharecterAfterSubstitutionOfGivenPosition($singleDigitPosition, 3);
-			$this->reverseRotor(3);
 			return $charecter;
-		}
-		private function reverseRotor($rotorNumber) {
-			switch($rotorNumber) {
-				case 1:
-					$this->rotor1 = array_reverse($this->rotor1);
-				break;
-				case 2:
-					$this->rotor1 = array_reverse($this->rotor1);
-				break;
-				case 3:
-					$this->rotor1 = array_reverse($this->rotor1);
-				break;
-			}
 		}
 		private function transformOnPlugBoard($inputCharecter) {
 			foreach($this->plugboard as $plugboardEntry) {
@@ -226,7 +213,3 @@ class MEnigma {
 
 	}
 ?>	
-<?php
-$enigma = new MEnigma();
-echo $enigma->encrypt("x", 'a,a,a', 'ac,bd');
-?>
